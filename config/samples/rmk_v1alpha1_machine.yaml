@@ -1,0 +1,9 @@
+apiVersion: rmk.markruler.com/v1alpha1
+kind: Machine
+metadata:
+  labels:
+    app.kubernetes.io/name: k8s
+    app.kubernetes.io/managed-by: kustomize
+  name: machine-sample
+spec:
+  role: worker

@@ -7,4 +7,14 @@ layout:
 - go.kubebuilder.io/v4
 projectName: k8s
 repo: markruler.com
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: markruler.com
+  group: rmk
+  kind: Machine
+  path: markruler.com/api/v1alpha1
+  version: v1alpha1
 version: "3"
