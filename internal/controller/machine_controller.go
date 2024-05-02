@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package controllers
+package controller
 
 import (
 	"context"
@@ -48,7 +48,7 @@ type MachineReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.17.3/pkg/reconcile
 func (r *MachineReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
-	
+
 	ctx := context.Background()
 	log := r.log.WithValues("machine", req.NamespacedName)
 
@@ -90,7 +90,6 @@ func (r *MachineReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	} else {
 		log.Info("Update machine", "updateName", req.NamespacedName)
 	}
-
 
 	return ctrl.Result{}, nil
 }

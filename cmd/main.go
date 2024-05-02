@@ -35,7 +35,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
 	rmkv1alpha1 "markruler.com/api/v1alpha1"
-	"markruler.com/internal/controller"
+	controller "markruler.com/internal/controller"
 	//+kubebuilder:scaffold:imports
 )
 
