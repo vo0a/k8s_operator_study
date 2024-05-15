@@ -4,7 +4,7 @@ k8s operator 학습
 
 ## Description
 
-https://youtu.be/ND4haK4pDF4?feature=shared 를 보고 작성했습니다.
+https://youtu.be/ND4haK4pDF4?feature=shared 를 따라하며 작성했습니다.
 
 ## Getting Started
 
@@ -14,6 +14,98 @@ https://youtu.be/ND4haK4pDF4?feature=shared 를 보고 작성했습니다.
 - docker version 17.03+.
 - kubectl version v1.11.3+.
 - Access to a Kubernetes v1.11.3+ cluster.
+
+---
+
+### 1. 스켈레톤 프로젝트 생성
+
+```sh
+kubectll get no # 노드 상태 확인
+```
+
+```sh
+# go 종속성 관리 파일 생성
+go mod init markrluer.com
+cat go mod
+```
+
+```sh
+# 스켈레톤 프로젝트 생성
+kubebuilder init --domain markruler.com
+kubebuilder create api --group rmk --version v1alpha1 --kind Machine
+# resource y, controller y 로 같이 생성
+```
+
+### 2. API Resource 정의
+
+- types.go 수정
+- controller.go 수정
+
+```sh
+make install # crd 배포
+kubectl get crd # 상태 확인
+```
+
+```sh
+kubectl get machine # 머신은 아직 없어야 함
+```
+
+- {group}_{versoin}_{domain}.yaml 수정
+
+```sh
+kubectl apply -f # 파일 수정 적용
+kubectl get machine # 머신 조회 --> 존재해야 함
+```
+
+### 3. Reconcile Loop 개발
+
+- controller.go 수정
+- rmk_v1alpha1_machine.yaml 수정
+
+```sh
+make run
+kubectl get machine
+```
+
+![image](https://github.com/vo0a/k8s_operator_study/assets/44438366/d39d909a-e3cc-49a3-ba67-2d30f6505ddf)
+
+### 4. 컨트롤러 컨테이너 배포
+
+- 사전 준비: 도커 계정 설정
+
+```sh
+sudo docker login
+```
+
+- docker hub 에 이미지 업로드
+
+```sh
+sudo make docker-build docker-push IMG=vo0a/operator-markruler:0.1.0
+sudo docker images | grep vo0a
+make deploy IMG=vo0a/operator-markruler:0.1.0 # 배포
+```
+
+```sh
+# 상태 바꾸고, 변경이 감지되어 machine 상태가 바뀌는지 확인
+kubectl get po -A
+# 여기서 나온 컨트롤러 이름으로 log 확인
+# k8s-controller-manager-bdb68d44c-887p4
+
+# 여기서 role garbage 로 변경
+watch kubectl get machine
+{group}_{versoin}_{domain}.yaml 수정
+
+# 상태 확인용
+kubectl logs -f k8s-controller-manager-bdb68d44c-887p4 -n k8s-system -c manager
+
+# garbage 상태로 재배포
+sudo kubectl apply -f config/samples/rmk_v1alpha1_machine.yaml
+```
+
+pod list
+![image](https://github.com/vo0a/k8s_operator_study/assets/44438366/16755177-0e21-48ce-ac52-69a973c64764)
+
+---
 
 ### To Deploy on the cluster
 
