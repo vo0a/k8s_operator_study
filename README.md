@@ -53,7 +53,7 @@ kubectl get machine # 머신은 아직 없어야 함
 - {group}_{versoin}_{domain}.yaml 수정
 
 ```sh
-kubectl apply -f # 파일 수정 적용
+kubectl apply -f config/samples/rmk_v1alpha1_machine.yaml # 파일 수정 적용
 kubectl get machine # 머신 조회 --> 존재해야 함
 ```
 
@@ -103,7 +103,17 @@ sudo kubectl apply -f config/samples/rmk_v1alpha1_machine.yaml
 ```
 
 pod list
+
 ![image](https://github.com/vo0a/k8s_operator_study/assets/44438366/16755177-0e21-48ce-ac52-69a973c64764)
+
+재배포 결과 - 삭제됨
+
+![image](https://github.com/vo0a/k8s_operator_study/assets/44438366/fb9725f2-fe70-4a50-a90c-0ad72cb9fc06)
+
+영상
+https://github.com/vo0a/k8s_operator_study/assets/44438366/d27a9c0d-88f2-4684-9c6d-4389c0d69138
+
+> todo: custom controller 로 log -f 변경
 
 ---
 
